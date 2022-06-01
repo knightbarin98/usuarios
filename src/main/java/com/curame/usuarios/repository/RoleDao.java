@@ -1,9 +1,9 @@
 package com.curame.usuarios.repository;
 
 import com.curame.usuarios.models.entity.Role;
-import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-@RepositoryRestResource(path = "roles")
-public interface RoleDao extends PagingAndSortingRepository<Role,Long> {
+@Repository
+public interface RoleDao extends CrudRepository<Role,Long> {
 }

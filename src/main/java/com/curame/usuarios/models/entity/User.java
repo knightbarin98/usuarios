@@ -1,16 +1,17 @@
 package com.curame.usuarios.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Table(name="users")
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
-@Table(name="users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,15 +26,21 @@ public class User {
     private String email;
     @Column(name = "login_tries")
     private Integer loginTries;
-    @OneToOne
-    @JoinColumn(name="profile_id")
-    private Profile profile;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_profiles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "profile_id", referencedColumnName = "id")
+    )
+    @JsonInclude
+    private List<Profile> profiles;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
     )
+    @JsonInclude
     private List<Role> roles;
 
 }
